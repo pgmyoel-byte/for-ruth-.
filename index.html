@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>For Ruth</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet">
+
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+
+    body{
+      font-family:'Poppins',sans-serif;
+      background:linear-gradient(135deg,#05070f,#0a1a3a,#0f2d6b);
+      min-height:100vh;display:flex;align-items:center;justify-content:center;
+      overflow:hidden;color:#eaf1ff;
+    }
+
+    /* INTRO SCREEN */
+    .intro{
+      position:fixed;inset:0;display:flex;align-items:center;justify-content:center;
+      background:linear-gradient(135deg,#05070f,#0a1a3a,#0f2d6b);
+      z-index:10;flex-direction:column;text-align:center;padding:20px;
+      animation:fadeIn 1.2s ease;
+    }
+
+    .intro h2{
+      font-family:'Playfair Display',serif;
+      font-size:2rem;color:#8fb3ff;margin-bottom:15px;
+    }
+
+    .intro p{opacity:.8;margin-bottom:25px}
+
+    .btn-group{display:flex;gap:15px}
+
+    .btn{
+      padding:10px 22px;border-radius:20px;border:1px solid rgba(255,255,255,.3);
+      background:rgba(255,255,255,.08);color:#dbe6ff;cursor:pointer;
+      backdrop-filter:blur(10px);transition:.3s;
+    }
+
+    .btn:hover{background:rgba(255,255,255,.18)}
+
+    /* MAIN CARD */
+    .card{
+      background:rgba(255,255,255,.08);
+      backdrop-filter:blur(18px);
+      border:1px solid rgba(255,255,255,.15);
+      border-radius:28px;padding:45px 35px;max-width:720px;width:90%;
+      box-shadow:0 25px 80px rgba(0,0,0,.6);
+      display:none;animation:fadeIn 1.6s ease;
+    }
+
+    h1{font-family:'Playfair Display',serif;text-align:center;color:#7fa8ff;margin-bottom:25px;font-size:2.4rem}
+
+    p{line-height:1.9;margin-bottom:18px;font-size:1rem;color:#dbe6ff;text-align:justify}
+
+    .signature{margin-top:28px;text-align:right;font-weight:600;color:#8fb3ff}
+
+    .heart-center{text-align:center;font-size:26px;margin-top:10px;animation:pulse 1.6s infinite;color:#9dbbff}
+
+    /* FLOATING HEARTS */
+    .floating{position:fixed;inset:0;pointer-events:none}
+    .floating span{position:absolute;color:rgba(150,180,255,.35);animation:float 12s linear infinite}
+
+    /* MUSIC BUTTON */
+    .music-btn{position:fixed;bottom:20px;right:20px;background:rgba(255,255,255,.1);
+      border:1px solid rgba(255,255,255,.3);color:#cfe0ff;padding:10px 16px;border-radius:20px;
+      cursor:pointer;backdrop-filter:blur(10px);display:none}
+
+    @keyframes fadeIn{from{opacity:0;transform:translateY(25px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes float{0%{transform:translateY(100vh)}100%{transform:translateY(-10vh)}}
+    @keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.2)}100%{transform:scale(1)}}
+  </style>
+</head>
+<body>
+
+<!-- INTRO QUESTION -->
+<div class="intro" id="intro">
+  <h2>Ruth…</h2>
+  <p>Sebelum kamu membaca semuanya, aku mau tanya dulu.</p>
+  <h2>Apakah kamu sudah mau memaafkan aku?</h2>
+
+  <div class="btn-group">
+    <button class="btn" onclick="answer(true)">Iya</button>
+    <button class="btn" onclick="answer(false)">Belum</button>
+  </div>
+</div>
+
+<!-- FLOATING HEARTS -->
+<div class="floating" id="floating"></div>
+
+<!-- MUSIC -->
+<audio id="bgm" loop>
+  <source src="music.mp3" type="audio/mpeg">
+</audio>
+
+<button class="music-btn" id="musicBtn" onclick="toggleMusic()">🎵 Music</button>
+
+<!-- MAIN CONTENT -->
+<div class="card" id="card">
+  <h1>For Ruth</h1>
+
+  <p>
+    Terima kasih sudah memberi kesempatan untuk membaca ini.
+    Aku menulis bukan hanya untuk meminta maaf, tetapi untuk benar-benar
+    mengakui bahwa aku sudah salah dan sedang belajar menjadi pribadi yang lebih baik.
+  </p>
+
+  <p>
+    Aku sadar mungkin ada sikap atau kata-kata yang membuat kamu kecewa.
+    Aku tidak ingin mengulang itu lagi. Aku ingin belajar lebih mengerti,
+    lebih menghargai, dan lebih dewasa dalam bersikap.
+  </p>
+
+  <p>
+    Aku tidak meminta semuanya langsung kembali seperti dulu.
+    Aku hanya ingin memperbaiki apa yang bisa diperbaiki,
+    pelan-pelan, dengan kesungguhan.
+  </p>
+
+  <p>
+    Terima kasih karena masih mau membuka hati.
+  </p>
+
+  <div class="heart-center">❤</div>
+  <div class="signature">– Yoel</div>
+</div>
+
+<script>
+  const intro=document.getElementById('intro');
+  const card=document.getElementById('card');
+  const music=document.getElementById('bgm');
+  const musicBtn=document.getElementById('musicBtn');
+
+  function answer(isYes){
+    if(isYes){
+      intro.style.display='none';
+      card.style.display='block';
+      musicBtn.style.display='block';
+      music.play().catch(()=>{});
+      createHearts();
+    }else{
+      intro.innerHTML=`<h2>Tidak apa-apa…</h2>
+      <p>Aku akan tetap menunggu sampai kamu benar-benar siap.</p>`;
+    }
+  }
+
+  function toggleMusic(){
+    if(music.paused){music.play();}else{music.pause();}
+  }
+
+  function createHearts(){
+    const floating=document.getElementById('floating');
+    for(let i=0;i<30;i++){
+      const span=document.createElement('span');
+      span.innerHTML='❤';
+      span.style.left=Math.random()*100+'vw';
+      span.style.fontSize=(12+Math.random()*18)+'px';
+      span.style.animationDuration=(8+Math.random()*6)+'s';
+      floating.appendChild(span);
+    }
+  }
+</script>
+
+</body>
+</html>
